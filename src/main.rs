@@ -34,7 +34,8 @@ fn get_action(arg: &str) -> Option<Box<dyn Action>>
 fn parse_cmd_line(args: &Vec<String>)
 {
 
-    if args.len() < 2 {
+    if args.len() < 2
+       || args.iter().find(|a| *a == "--help").is_some() {
         usage(&args[0], 1);
     }
 
