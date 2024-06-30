@@ -11,7 +11,10 @@ use action::Action;
 
 fn usage(name: &str, code: i32) 
 {
-    println!("usage: {} ARG1 [ARG2]", name);
+    println!("usage: {} COMMAND ...\n", name);
+    println!("Commands");
+    println!("  add\t\tAdd a link to the database");
+    println!("  search\tRetrieve a link from the database");
     process::exit(code);
 }
 
@@ -36,7 +39,6 @@ fn parse_cmd_line(args: &Vec<String>)
     }
 
     let invoked_name = &args[0][..];
-    let args_cloned = &args[2..].to_vec();
     let action = match get_action(&args[1][..]) {
         Some(act) => act,
         None => {
@@ -44,6 +46,7 @@ fn parse_cmd_line(args: &Vec<String>)
             return;
         },
     };
+    let args_cloned = &args[2..].to_vec();
     if let Err(e) = action.handle(args_cloned) {
         println!("error: {}", e);
         action.usage(invoked_name, 1);
