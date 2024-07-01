@@ -1,5 +1,8 @@
-use crate::link::Link;
-use crate::file::add_to_file;
+use crate::{
+    link::Link,
+    file::add_to_file
+};
+
 use url::Url;
 
 pub trait Action {

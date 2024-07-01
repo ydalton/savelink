@@ -1,6 +1,12 @@
-use std::path::PathBuf;
-use std::fs::File;
-use std::io::{Read, Write, Seek};
+use std::{
+    path::PathBuf,
+    fs::File,
+    io::{
+        Read,
+        Write,
+        Seek
+    }
+};
 
 use serde_json::{to_string, from_str};
 
