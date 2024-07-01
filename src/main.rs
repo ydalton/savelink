@@ -2,6 +2,7 @@ use std::{env, process};
 
 mod action;
 mod link;
+mod file;
 
 use action::{Action, Add, Open, Search};
 

@@ -1,4 +1,5 @@
 use crate::link::Link;
+use crate::file::add_to_file;
 use url::Url;
 
 pub trait Action {
@@ -34,7 +35,8 @@ impl Action for Add {
 
         let link = builder.build();
 
-        dbg!(&link);
+        add_to_file(link);
+
         Ok(())
     }
 }
