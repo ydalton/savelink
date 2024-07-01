@@ -1,12 +1,11 @@
 use std::{env, process};
 
-mod link;
 mod action;
+mod link;
 
-use action::{Action, Search, Add, Open};
+use action::{Action, Add, Open, Search};
 
-fn usage(name: &str, code: i32) 
-{
+fn usage(name: &str, code: i32) {
     println!("usage: {} COMMAND ...\n", name);
     println!("Commands:");
     println!("  add\t\tAdd a link to the database");
@@ -15,27 +14,17 @@ fn usage(name: &str, code: i32)
     process::exit(code);
 }
 
-fn get_action(arg: &str) -> Option<Box<dyn Action>>
-{
+fn get_action(arg: &str) -> Option<Box<dyn Action>> {
     match arg {
-        "add" => {
-            return Some(Box::new(Add {}))
-        },
-        "search" => {
-            return Some(Box::new(Search {}))
-        }
-        "open" => {
-            return Some(Box::new(Open {}))
-        }
+        "add" => return Some(Box::new(Add {})),
+        "search" => return Some(Box::new(Search {})),
+        "open" => return Some(Box::new(Open {})),
         _ => return None,
     };
 }
 
-fn parse_cmd_line(args: &Vec<String>)
-{
-
-    if args.len() < 2
-       || args.iter().find(|a| *a == "--help").is_some() {
+fn parse_cmd_line(args: &Vec<String>) {
+    if args.len() < 2 || args.iter().find(|a| *a == "--help").is_some() {
         usage(&args[0], 1);
     }
 
@@ -45,18 +34,17 @@ fn parse_cmd_line(args: &Vec<String>)
         None => {
             usage(invoked_name, 1);
             return;
-        },
+        }
     };
     let args_cloned = &args[2..].to_vec();
     if let Err(e) = action.handle(args_cloned) {
         println!("error: {}\n", e);
-        println!("{}",action.usage(invoked_name));
+        println!("{}", action.usage(invoked_name));
         std::process::exit(1);
     }
 }
 
-fn main() 
-{
+fn main() {
     let args: Vec<String> = env::args().collect();
 
     parse_cmd_line(&args);
