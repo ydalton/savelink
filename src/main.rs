@@ -1,20 +1,17 @@
 use std::{env, process};
 
 mod link;
-mod search;
-mod add;
 mod action;
 
-use add::Add;
-use search::Search;
-use action::Action;
+use action::{Action, Search, Add, Open};
 
 fn usage(name: &str, code: i32) 
 {
     println!("usage: {} COMMAND ...\n", name);
-    println!("Commands");
+    println!("Commands:");
     println!("  add\t\tAdd a link to the database");
     println!("  search\tRetrieve a link from the database");
+    println!("  open\t\tSame as search, but opens the link in the browser");
     process::exit(code);
 }
 
@@ -26,6 +23,9 @@ fn get_action(arg: &str) -> Option<Box<dyn Action>>
         },
         "search" => {
             return Some(Box::new(Search {}))
+        }
+        "open" => {
+            return Some(Box::new(Open {}))
         }
         _ => return None,
     };
@@ -49,8 +49,9 @@ fn parse_cmd_line(args: &Vec<String>)
     };
     let args_cloned = &args[2..].to_vec();
     if let Err(e) = action.handle(args_cloned) {
-        println!("error: {}", e);
-        action.usage(invoked_name, 1);
+        println!("error: {}\n", e);
+        println!("{}",action.usage(invoked_name));
+        std::process::exit(1);
     }
 }
 
